@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="../../simpleUpload.min.js"></script>
+
+<script type="text/javascript">
+
+$(document).ready(function(){
+
+	$('input[type=file]').change(function(){
+
+		$(this).simpleUpload("../server/same-domain.php", {
+
+			start: function(file){
+				//upload started
+				console.log("upload started");
+			},
+
+			progress: function(progress){
+				//received progress
+				console.log("upload progress: " + Math.round(progress) + "%");
+			},
+
+			success: function(data){
+				//upload successful
+				console.log("upload successful!");
+				console.log(data);
+			},
+
+			error: function(error){
+				//upload failed
+				console.log("upload error: " + error.name + ": " + error.message);
+			}
+
+		});
+
+	});
+
+});
+
+</script>
+
+</head>
+<body>
+
+<input type="file" name="file">
+
+</body>
+</html>
