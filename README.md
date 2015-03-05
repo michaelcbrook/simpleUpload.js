@@ -298,7 +298,7 @@ $(document).ready(function(){
 
 # Server-side
 
-No external scripts required.
+No external scripts required. I have written these examples in PHP, but they can be written in any language.
 
 ### Same-domain Upload
 
