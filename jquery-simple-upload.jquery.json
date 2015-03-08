@@ -1,0 +1,53 @@
+{
+  "name": "jquery-simple-upload",
+  "version": "1.0.0",
+  "title": "simpleUpload.js",
+  "description": "Simple yet powerful file upload plugin for jQuery designed to be non-intrusive, backwards-compatible, flexible, and very easy to understand.",
+  "main": "simpleUpload.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaelcbrook/simpleUpload.js.git"
+  },
+  "keywords": [
+    "file",
+    "upload",
+    "jquery",
+    "plugin",
+    "simple",
+    "ajax",
+    "html5",
+    "iframe",
+    "jquery-plugin",
+    "ecosystem:jquery"
+  ],
+  "author": {
+    "name": "Michael Brook",
+    "url": "http://michaelcbrook.com/"
+  },
+  "maintainers": [
+    {
+      "name": "Michael Brook",
+      "email": "michaelcbrook@gmail.com",
+      "url": "http://michaelcbrook.com/"
+    }
+  ],
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "http://opensource.org/licenses/MIT"
+    }
+  ],
+  "bugs": "https://github.com/michaelcbrook/simpleUpload.js/issues",
+  "dependencies": {
+    "jquery": ">=1.7.0"
+  },
+  "homepage": "http://simpleupload.michaelcbrook.com/",
+  "docs": "http://simpleupload.michaelcbrook.com/",
+  "demo": "http://simpleupload.michaelcbrook.com/"
+}
