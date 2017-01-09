@@ -40,6 +40,8 @@ var on_cancel_callback = function(){}; //on cancelled upload (via this.upload.ca
 var on_complete_callback = function(status){}; //on completed upload, regardless of success
 var on_finish_callback = function(){}; //on completion of all file uploads for this instance, regardless of success
 
+var change_ajax_settings = function (ajax_settings) {return ajax_settings;};
+	
 var upload_contexts = []; //an array containing objects for each file upload that can be referenced inside each callback using "this"
 var private_upload_data = []; //same as above, except the properties of these objects are not accessible via "this"
 var instance_context = { files: upload_contexts }; //an instance-specific context for "this" to pass to non-file-specific events like init() and finish()
@@ -176,6 +178,10 @@ var on_finish = function(){
 	    {
 	    on_progress_callback = options.progress;
 	    }
+            if (typeof options.beforeChangeAjaxSettings=="function")
+            {
+            change_ajax_settings = options.beforeChangeAjaxSettings;
+            }
 
 	    if (typeof options.success=="function")
 	    {
@@ -835,6 +841,8 @@ var on_finish = function(){
 	          {
 	          ajax_settings.dataType = expect_type;
 	          }
+			
+		ajax_settings = change_ajax_settings(ajax_settings);
 
 	        $.ajax(ajax_settings); //execute ajax request
 
