@@ -1,5 +1,7 @@
 /*
- * Copyright 2015, Michael Brook, All rights reserved.
+ * simpleUpload.js v.1.1
+ *
+ * Copyright 2018, Michael Brook, All rights reserved.
  * http://simpleupload.michaelcbrook.com/
  *
  * simpleUpload.js is an extremely simple yet powerful jQuery file upload plugin.
@@ -39,6 +41,8 @@ var on_error_callback = function(error){}; //on failed file upload
 var on_cancel_callback = function(){}; //on cancelled upload (via this.upload.cancel())
 var on_complete_callback = function(status){}; //on completed upload, regardless of success
 var on_finish_callback = function(){}; //on completion of all file uploads for this instance, regardless of success
+
+var on_before_send_callback = function(jqXHR, settings){}; //gives the opportunity to modify the XHR object before sending the request
 
 var upload_contexts = []; //an array containing objects for each file upload that can be referenced inside each callback using "this"
 var private_upload_data = []; //same as above, except the properties of these objects are not accessible via "this"
@@ -143,6 +147,12 @@ var on_finish = function(){
 
 };
 
+var on_before_send = function(upload_num, jqXHR, settings){
+
+  on_before_send_callback.call(upload_contexts[upload_num], jqXHR, settings);
+
+};
+
 /* End callback wrappers */
 
 
@@ -200,6 +210,11 @@ var on_finish = function(){
 	    if (typeof options.finish=="function")
 	    {
 	    on_finish_callback = options.finish;
+	    }
+
+	    if (typeof options.beforeSend=="function")
+	    {
+	    on_before_send_callback = options.beforeSend;
 	    }
 
 	    if (typeof options.hashWorker=="string" && options.hashWorker!="")
@@ -797,7 +812,9 @@ var on_finish = function(){
 
 	        formData.append(request_file_name, file); //associate the file with options.name, the name of the DOM_file element, or "file" if one does not exist (in that order)
 
-	        var ajax_settings = { url: ajax_url, data: formData, type: 'post', cache: false, xhrFields: xhrFields, beforeSend: function(jqXHR) {
+	        var ajax_settings = { url: ajax_url, data: formData, type: 'post', cache: false, xhrFields: xhrFields, beforeSend: function(jqXHR, settings) {
+            
+            on_before_send(upload_num, jqXHR, settings);
 
 	          private_upload_data[upload_num].xhr = jqXHR; //store the jqXHR object to make the upload cancellable
 
@@ -814,11 +831,11 @@ var on_finish = function(){
 
 	          return ajax_xhr;
 
-	        }, error: function() {
+	        }, error: function(xhr) {
 
 	          private_upload_data[upload_num].xhr = null;
 
-	          on_error(upload_num, { name: "RequestError", message: "Could not get response from server" });
+	          on_error(upload_num, { name: "RequestError", message: "Upload failed", xhr: xhr });
 
 	        }, success: function(data) {
 
@@ -1586,7 +1603,7 @@ simpleUpload.iframeCallback = function(data){
         }
         else
         {
-        simpleUpload.iframes[id].error("Could not get response from server");
+        simpleUpload.iframes[id].error("Upload failed");
         }
 
       }
@@ -1637,7 +1654,7 @@ simpleUpload.postMessageCallback = function(e){
                   }
                   else
                   {
-                  simpleUpload.iframes[id].error("Could not get response from server");
+                  simpleUpload.iframes[id].error("Upload failed");
                   }
 
                 }
